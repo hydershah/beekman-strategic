@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beekman Strategic — Select Direction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: #040915;
+      color: #f0f4f8;
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .logo-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6ee6ff, #70b7ff);
+      box-shadow: 0 0 30px rgba(110, 230, 255, 0.6);
+    }
+    .logo-text {
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    h1 {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .subtitle {
+      color: #7a92b0;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      width: 100%;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 24px;
+      padding: 40px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .card:nth-child(1)::before {
+      background: radial-gradient(circle at 30% 30%, rgba(110, 230, 255, 0.15), transparent 60%);
+    }
+    .card:nth-child(2)::before {
+      background: radial-gradient(circle at 50% 20%, rgba(122, 209, 255, 0.15), transparent 60%);
+    }
+    .card:nth-child(3)::before {
+      background: radial-gradient(circle at 70% 40%, rgba(141, 215, 255, 0.15), transparent 60%);
+    }
+    .card:hover::before { opacity: 1; }
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    }
+    .card-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #7a92b0;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .card h2 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .card p {
+      color: #7a92b0;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #f0f4f8;
+      position: relative;
+    }
+    .card-link svg {
+      transition: transform 0.3s ease;
+    }
+    .card:hover .card-link svg {
+      transform: translateX(4px);
+    }
+    footer {
+      margin-top: 80px;
+      color: #7a92b0;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <span class="logo-dot"></span>
+    <span class="logo-text">Beekman Strategic</span>
+  </div>
+  <h1>Choose Your Direction</h1>
+  <p class="subtitle">Three distinct approaches to presenting our firm</p>
+
+  <div class="cards">
+    <a href="vanguard.html" class="card">
+      <div class="card-label">Version A</div>
+      <h2>Glass Vanguard</h2>
+      <p>Trust, tradition, and institutional credibility. Clean aesthetics that convey stability and expertise.</p>
+      <span class="card-link">
+        View site
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </a>
+
+    <a href="ledger.html" class="card">
+      <div class="card-label">Version B</div>
+      <h2>Aurora Ledger</h2>
+      <p>Futuristic precision meets velocity. Dynamic gradients and forward-thinking design language.</p>
+      <span class="card-link">
+        View site
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </a>
+
+    <a href="apex.html" class="card">
+      <div class="card-label">Version C</div>
+      <h2>Blueprint Apex</h2>
+      <p>Elite special forces approach. Bold confidence with an exclusive, invitation-only aesthetic.</p>
+      <span class="card-link">
+        View site
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </a>
+  </div>
+
+  <footer>© 2025 Beekman Strategic</footer>
+</body>
+</html>

@@ -1,0 +1,1348 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beekman Strategic — Blueprint Apex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #020408;
+      --panel: rgba(255, 255, 255, 0.02);
+      --stroke: rgba(255, 255, 255, 0.08);
+      --text: #f0f4f8;
+      --muted: #6b7c94;
+      --muted-soft: rgba(107, 124, 148, 0.5);
+      --accent: #8dd7ff;
+      --accent-glow: rgba(141, 215, 255, 0.2);
+      --radius: 16px;
+      --radius-lg: 24px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ink);
+      color: var(--text);
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; transition: color 0.3s; }
+    a:hover { color: var(--accent); }
+    .wrap { width: min(1200px, calc(100% - 48px)); margin: 0 auto; }
+
+    /* Grid Background */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background:
+        repeating-linear-gradient(90deg, rgba(141, 215, 255, 0.03) 0px, rgba(141, 215, 255, 0.03) 1px, transparent 1px, transparent 100px),
+        repeating-linear-gradient(0deg, rgba(141, 215, 255, 0.03) 0px, rgba(141, 215, 255, 0.03) 1px, transparent 1px, transparent 100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      background: rgba(2, 4, 8, 0.95);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--accent);
+    }
+    .logo-text {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    nav { display: flex; gap: 40px; }
+    nav a { font-size: 13px; color: var(--muted); letter-spacing: 0.05em; }
+    nav a:hover { color: var(--text); }
+    .header-cta {
+      padding: 14px 28px;
+      background: transparent;
+      border: 2px solid var(--text);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .header-cta:hover { background: var(--text); color: var(--ink); }
+
+    /* Sections */
+    section { padding: 160px 0; position: relative; z-index: 1; }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label::before {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .section-title {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 550px;
+      line-height: 1.8;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 100px;
+      position: relative;
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 40px;
+    }
+    .hero-tag::before,
+    .hero-tag::after {
+      content: '';
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .hero h1 {
+      font-size: clamp(52px, 10vw, 100px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      margin-bottom: 32px;
+    }
+    .hero h1 .thin {
+      font-weight: 400;
+      color: var(--muted);
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+    }
+    .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; }
+    .btn {
+      padding: 18px 40px;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--text);
+      color: var(--ink);
+    }
+    .btn-primary:hover { box-shadow: 0 20px 50px rgba(141, 215, 255, 0.2); transform: translateY(-2px); color: var(--ink); }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--stroke);
+      color: var(--muted);
+    }
+    .btn-outline:hover { border-color: var(--text); color: var(--text); }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+      margin-top: 100px;
+      padding-top: 60px;
+      border-top: 1px solid var(--stroke);
+      max-width: 700px;
+    }
+    .hero-stat strong {
+      display: block;
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+    .hero-stat span {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Credentials */
+    .credentials {
+      border-top: 1px solid var(--stroke);
+      border-bottom: 1px solid var(--stroke);
+      padding: 80px 0;
+      background: rgba(141, 215, 255, 0.01);
+    }
+    .credentials-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .credential {
+      text-align: center;
+    }
+    .credential strong {
+      display: block;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .credential span {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    /* About */
+    .about { background: transparent; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 120px;
+      align-items: center;
+    }
+    .about-content .section-subtitle { margin-bottom: 40px; }
+    .about-features {
+      display: grid;
+      gap: 24px;
+    }
+    .about-feature {
+      display: flex;
+      gap: 20px;
+    }
+    .about-feature-marker {
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+      flex-shrink: 0;
+    }
+    .about-feature h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .about-feature p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .about-visual {
+      border: 1px solid var(--stroke);
+      padding: 60px;
+    }
+    .about-visual-stat {
+      font-size: 120px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      color: var(--accent);
+    }
+    .about-visual-label {
+      font-size: 14px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-top: 16px;
+    }
+
+    /* Services */
+    .services { background: transparent; }
+    .services-header {
+      max-width: 600px;
+      margin-bottom: 80px;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--stroke);
+      border: 1px solid var(--stroke);
+    }
+    .service-card {
+      background: var(--ink);
+      padding: 48px;
+      transition: all 0.4s;
+    }
+    .service-card:hover { background: rgba(141, 215, 255, 0.03); }
+    .service-number {
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      margin-bottom: 24px;
+    }
+    .service-card h3 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .service-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Process */
+    .process { background: transparent; }
+    .process-header {
+      max-width: 600px;
+      margin-bottom: 80px;
+    }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+    .process-step {
+      border-top: 1px solid var(--stroke);
+      padding-top: 32px;
+    }
+    .process-step-number {
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      margin-bottom: 20px;
+    }
+    .process-step h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .process-step p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Stats Banner */
+    .stats-banner {
+      background: transparent;
+      border-top: 1px solid var(--stroke);
+      border-bottom: 1px solid var(--stroke);
+      padding: 100px 0;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 60px;
+    }
+    .stat-item { text-align: center; }
+    .stat-item strong {
+      display: block;
+      font-size: 64px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+    }
+    .stat-item span {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    /* Why Apex */
+    .why-apex { background: transparent; }
+    .why-apex-header {
+      max-width: 600px;
+      margin-bottom: 80px;
+    }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--stroke);
+      border: 1px solid var(--stroke);
+    }
+    .why-card {
+      background: var(--ink);
+      padding: 56px;
+    }
+    .why-card h3 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .why-card p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* Testimonial */
+    .testimonial {
+      background: transparent;
+      border-top: 1px solid var(--stroke);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .testimonial-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .testimonial-quote {
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: -0.02em;
+      margin-bottom: 48px;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .testimonial-avatar {
+      width: 60px;
+      height: 60px;
+      border: 2px solid var(--stroke);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .testimonial-info strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .testimonial-info span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* FAQ */
+    .faq { background: transparent; }
+    .faq-header {
+      max-width: 600px;
+      margin-bottom: 80px;
+    }
+    .faq-list {
+      max-width: 800px;
+      border-top: 1px solid var(--stroke);
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--stroke);
+      padding: 32px 0;
+    }
+    .faq-question {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-question::after {
+      content: '+';
+      font-size: 24px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .faq-answer {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-top: 20px;
+      padding-right: 60px;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: transparent;
+      border-top: 1px solid var(--stroke);
+      border-bottom: 1px solid var(--stroke);
+      padding: 140px 0;
+    }
+    .cta-inner {
+      max-width: 700px;
+    }
+    .cta-inner h2 {
+      font-size: clamp(40px, 6vw, 60px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      line-height: 1.1;
+    }
+    .cta-inner p {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 48px;
+      line-height: 1.8;
+    }
+
+    /* Contact */
+    .contact { background: transparent; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 100px;
+    }
+    .contact-info h2 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .contact-info > p {
+      color: var(--muted);
+      margin-bottom: 48px;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    .contact-details {
+      display: grid;
+      gap: 28px;
+    }
+    .contact-detail {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .contact-detail-marker {
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--accent);
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+    .contact-detail strong {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .contact-detail span {
+      font-size: 16px;
+    }
+    .contact-form {
+      border: 1px solid var(--stroke);
+      padding: 56px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .form-group { margin-bottom: 24px; }
+    input, textarea {
+      width: 100%;
+      padding: 18px 0;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--stroke);
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      transition: border-color 0.3s;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    input::placeholder, textarea::placeholder { color: var(--muted-soft); }
+    textarea { min-height: 120px; resize: vertical; }
+    .form-submit { margin-top: 40px; }
+    .form-submit .btn { width: 100%; }
+
+    /* Footer */
+    footer {
+      background: transparent;
+      border-top: 1px solid var(--stroke);
+      padding: 100px 0 60px;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 80px;
+      margin-bottom: 80px;
+    }
+    .footer-brand p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 20px;
+      max-width: 280px;
+      line-height: 1.7;
+    }
+    .footer-col h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .footer-links {
+      list-style: none;
+      display: grid;
+      gap: 14px;
+    }
+    .footer-links a {
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 40px;
+      border-top: 1px solid var(--stroke);
+      font-size: 12px;
+      color: var(--muted-soft);
+      letter-spacing: 0.05em;
+    }
+    .footer-legal { display: flex; gap: 32px; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; gap: 60px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .process-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 60px; }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      section { padding: 100px 0; }
+      nav { display: none; }
+      .hero h1 { font-size: 48px; }
+      .hero-stats { grid-template-columns: 1fr; gap: 32px; }
+      .credentials-inner { justify-content: center; }
+      .process-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 48px; }
+      .footer-bottom { flex-direction: column; gap: 20px; }
+    }
+
+    /* Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Grid scan line effect */
+    .grid-bg::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(141, 215, 255, 0.4), transparent);
+      animation: scan 8s linear infinite;
+    }
+    @keyframes scan {
+      0% { top: 0; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { top: 100vh; opacity: 0; }
+    }
+
+    /* Tactical cursor */
+    .cursor-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border: 2px solid var(--accent);
+      background: transparent;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, background 0.2s;
+    }
+    .cursor-dot.active {
+      background: var(--accent);
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(141, 215, 255, 0.3);
+      border-radius: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s, border-color 0.2s;
+    }
+    .cursor-ring.active {
+      border-color: var(--accent);
+      transform: translate(-50%, -50%) scale(1.2) rotate(45deg);
+    }
+
+    /* Card border glow */
+    .service-card, .why-card, .faq-item {
+      position: relative;
+    }
+    .service-card::before, .why-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+    .service-card::before {
+      background: linear-gradient(135deg, rgba(141, 215, 255, 0.1), transparent 60%);
+    }
+    .why-card::before {
+      background: linear-gradient(135deg, rgba(141, 215, 255, 0.08), transparent 50%);
+    }
+    .service-card:hover::before, .why-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Stats counter glow */
+    .stat-item strong, .hero-stat strong {
+      text-shadow: 0 0 40px rgba(141, 215, 255, 0.3);
+    }
+
+    /* Process step line animation */
+    .process-step {
+      position: relative;
+    }
+    .process-step::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible .process-step::before {
+      width: 100%;
+    }
+
+    /* Button tactical effect */
+    .btn-primary {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    /* Hero text glitch effect on load */
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-2px, -2px); }
+      80% { transform: translate(2px, 2px); }
+    }
+    .hero h1 {
+      animation: glitch 0.3s ease-out;
+    }
+
+    /* Border animation on focus */
+    input:focus, textarea:focus {
+      box-shadow: 0 1px 0 0 var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="wrap header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">BS</span>
+        <span class="logo-text">Beekman Strategic</span>
+      </a>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#services">Solutions</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a href="#contact" class="header-cta">Book Strategy Call</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-content reveal">
+        <div class="hero-tag">Special Forces Finance</div>
+        <h1>Lean principals.<br><span class="thin">Massive network.</span></h1>
+        <p>Senior operators only. AI-powered workflows. A curated partner ecosystem across 8 global financial centers.</p>
+        <div class="hero-buttons">
+          <a href="#contact" class="btn btn-primary">Book Strategy Call</a>
+          <a href="#services" class="btn btn-outline">View Track Record</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>$500M</strong>
+            <span>Structured</span>
+          </div>
+          <div class="hero-stat">
+            <strong>$300M</strong>
+            <span>Capital Deployed</span>
+          </div>
+          <div class="hero-stat">
+            <strong>8</strong>
+            <span>Global Centers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credentials -->
+  <div class="credentials">
+    <div class="wrap credentials-inner">
+      <div class="credential">
+        <strong>22yr</strong>
+        <span>Principal Experience</span>
+      </div>
+      <div class="credential">
+        <strong>35+</strong>
+        <span>Issuer Partners</span>
+      </div>
+      <div class="credential">
+        <strong>48hr</strong>
+        <span>Team Deployment</span>
+      </div>
+      <div class="credential">
+        <strong>Days</strong>
+        <span>Not Months</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="about-content reveal">
+          <p class="section-label">About Blueprint Apex</p>
+          <h2 class="section-title">The special forces<br>of finance.</h2>
+          <p class="section-subtitle">We deploy senior operators—not junior analysts—on every engagement. Our principals have direct accountability from day one.</p>
+          <div class="about-features">
+            <div class="about-feature">
+              <div class="about-feature-marker"></div>
+              <div>
+                <h4>Principal-Only</h4>
+                <p>Senior operators with 20+ years experience on every mandate. No handoffs.</p>
+              </div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature-marker"></div>
+              <div>
+                <h4>AI Backbone</h4>
+                <p>Proprietary workflows that compress timelines without compromising quality.</p>
+              </div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature-marker"></div>
+              <div>
+                <h4>Curated Network</h4>
+                <p>Direct relationships with 35+ issuers and legal partners worldwide.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about-visual reveal">
+          <div class="about-visual-stat">8</div>
+          <div class="about-visual-label">Global Financial Centers</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="services-header reveal">
+        <p class="section-label">Solutions</p>
+        <h2 class="section-title">What we deploy.</h2>
+        <p class="section-subtitle">From concept to capital deployment with governance and transparent reporting built in.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-number">01</div>
+          <h3>Fund Structuring</h3>
+          <p>Delaware, Swiss, Luxembourg. ETPs, AMCs, SPVs, LPs, and LLPs. Turnkey setups with investor-ready data rooms.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-number">02</div>
+          <h3>Capital Raising</h3>
+          <p>Narrative-driven investor alignment. From private placements to exchange listings across global markets.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-number">03</div>
+          <h3>Asset Servicing</h3>
+          <p>Administration, reporting, and ongoing governance. Institutional-grade operations for sophisticated structures.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="process" id="process">
+    <div class="wrap">
+      <div class="process-header reveal">
+        <p class="section-label">Operating Cadence</p>
+        <h2 class="section-title">How we work.</h2>
+        <p class="section-subtitle">Clear timelines, senior accountability, and transparent reporting at every milestone.</p>
+      </div>
+      <div class="process-grid">
+        <div class="process-step reveal">
+          <div class="process-step-number">STEP 01</div>
+          <h3>Strategy Room</h3>
+          <p>90-minute session with principals to define objectives and scope.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="process-step-number">STEP 02</div>
+          <h3>Blueprint</h3>
+          <p>Detailed roadmap delivered within two weeks with clear milestones.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="process-step-number">STEP 03</div>
+          <h3>Execution</h3>
+          <p>AI-accelerated deployment on sprint cycles with weekly updates.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="process-step-number">STEP 04</div>
+          <h3>Reporting</h3>
+          <p>Ongoing governance, compliance, and performance dashboards.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats-banner">
+    <div class="wrap">
+      <div class="stats-grid reveal">
+        <div class="stat-item">
+          <strong>$500M+</strong>
+          <span>Structured</span>
+        </div>
+        <div class="stat-item">
+          <strong>$300M+</strong>
+          <span>Deployed</span>
+        </div>
+        <div class="stat-item">
+          <strong>35+</strong>
+          <span>Partners</span>
+        </div>
+        <div class="stat-item">
+          <strong>8</strong>
+          <span>Centers</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Apex -->
+  <section class="why-apex">
+    <div class="wrap">
+      <div class="why-apex-header reveal">
+        <p class="section-label">Why Blueprint Apex</p>
+        <h2 class="section-title">What sets us apart.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <h3>Discretion</h3>
+          <p>Confidential execution for sophisticated clients who value privacy. By invitation only.</p>
+        </div>
+        <div class="why-card reveal">
+          <h3>Pace</h3>
+          <p>AI-accelerated workflows deliver in days what traditionally takes months. No compromise on quality.</p>
+        </div>
+        <div class="why-card reveal">
+          <h3>Rigor</h3>
+          <p>Institutional-grade governance and compliance built into every engagement from day one.</p>
+        </div>
+        <div class="why-card reveal">
+          <h3>Network</h3>
+          <p>Direct relationships across 35+ issuers and legal partners in 8 global financial centers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section class="testimonial">
+    <div class="wrap">
+      <div class="testimonial-inner reveal">
+        <p class="testimonial-quote">"Blueprint Apex operates like a special forces unit—lean, fast, and devastatingly effective. They delivered what three other firms couldn't."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">RK</div>
+          <div class="testimonial-info">
+            <strong>Robert Kellner</strong>
+            <span>Chairman, European Family Office</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="wrap">
+      <div class="faq-header reveal">
+        <p class="section-label">FAQ</p>
+        <h2 class="section-title">Common questions.</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <div class="faq-question">What's the minimum engagement size?</div>
+          <p class="faq-answer">We work with mandates of $10M and above. Each opportunity is evaluated for complexity, strategic fit, and mutual value creation.</p>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-question">How quickly can you mobilize?</div>
+          <p class="faq-answer">Senior principals can be engaged within 48 hours. Initial strategy sessions are typically scheduled within one week of confirmation.</p>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-question">What jurisdictions do you cover?</div>
+          <p class="faq-answer">Delaware, Switzerland, Luxembourg, Singapore, Dubai, UK, Monaco, and Germany. We have direct partner relationships in each.</p>
+        </div>
+        <div class="faq-item reveal">
+          <div class="faq-question">Is Blueprint Apex invitation-only?</div>
+          <p class="faq-answer">We accept referrals and direct inquiries, but we're selective about engagements. Our model is built for sophisticated clients who value discretion.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="wrap">
+      <div class="cta-inner reveal">
+        <h2>Deploy the special forces.</h2>
+        <p>Ready to mobilize? Schedule a confidential strategy session with our principals. Discretion, pace, and institutional rigor.</p>
+        <a href="#contact" class="btn btn-primary">Book Strategy Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <h2>Direct access.</h2>
+          <p>Connect directly with our principals. No gatekeepers, no junior staff. Just senior operators ready to deploy.</p>
+          <div class="contact-details">
+            <div class="contact-detail">
+              <div class="contact-detail-marker"></div>
+              <div>
+                <strong>Email</strong>
+                <span>apex@beekmanstrategic.com</span>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-detail-marker"></div>
+              <div>
+                <strong>Phone</strong>
+                <span>+1 (212) 555-1234</span>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-detail-marker"></div>
+              <div>
+                <strong>Locations</strong>
+                <span>New York · London · Zurich · Singapore</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form reveal">
+          <div class="form-row">
+            <input type="text" placeholder="First Name">
+            <input type="text" placeholder="Last Name">
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Company">
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Describe your objective"></textarea>
+          </div>
+          <div class="form-submit">
+            <button class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-mark">BS</span>
+            <span class="logo-text">Beekman Strategic</span>
+          </div>
+          <p>Lean senior operators with a global network and AI-enabled backbone. By invitation only.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Solutions</h4>
+          <ul class="footer-links">
+            <li><a href="#">Fund Structuring</a></li>
+            <li><a href="#">Capital Raising</a></li>
+            <li><a href="#">Asset Servicing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul class="footer-links">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Process</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Locations</h4>
+          <ul class="footer-links">
+            <li><a href="#">New York</a></li>
+            <li><a href="#">London</a></li>
+            <li><a href="#">Zurich</a></li>
+            <li><a href="#">Singapore</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Beekman Strategic · Blueprint Apex</span>
+        <div class="footer-legal">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Disclosures</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for reveals
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Tactical cursor
+    const cursorDot = document.createElement('div');
+    const cursorRing = document.createElement('div');
+    cursorDot.className = 'cursor-dot';
+    cursorRing.className = 'cursor-ring';
+    document.body.appendChild(cursorDot);
+    document.body.appendChild(cursorRing);
+
+    let mouseX = 0, mouseY = 0;
+    let dotX = 0, dotY = 0;
+    let ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      dotX += (mouseX - dotX) * 0.2;
+      dotY += (mouseY - dotY) * 0.2;
+      ringX += (mouseX - ringX) * 0.1;
+      ringY += (mouseY - ringY) * 0.1;
+
+      cursorDot.style.left = dotX + 'px';
+      cursorDot.style.top = dotY + 'px';
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top = ringY + 'px';
+
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Cursor interaction states
+    const interactiveElements = document.querySelectorAll('a, button, input, textarea');
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursorDot.classList.add('active');
+        cursorRing.classList.add('active');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursorDot.classList.remove('active');
+        cursorRing.classList.remove('active');
+      });
+    });
+
+    // Smooth header
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.style.background = 'rgba(2, 4, 8, 0.98)';
+      } else {
+        header.style.background = 'rgba(2, 4, 8, 0.95)';
+      }
+    });
+
+    // Counter animation
+    const animateValue = (el, target, suffix = '') => {
+      const duration = 1500;
+      const start = 0;
+      const startTime = performance.now();
+
+      const update = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 4);
+        const current = Math.floor(start + (target - start) * easeOut);
+        el.textContent = current + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+        else el.textContent = target + suffix;
+      };
+      requestAnimationFrame(update);
+    };
+
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.dataset.animated) {
+          entry.target.dataset.animated = 'true';
+          const text = entry.target.textContent;
+          const match = text.match(/(\$?)(\d+)(.*)/);
+          if (match) {
+            const number = parseInt(match[2]);
+            const suffix = match[3];
+            animateValue(entry.target, number, suffix);
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-item strong, .hero-stat strong, .credential strong').forEach(el => {
+      statObserver.observe(el);
+    });
+
+    // Stagger process steps
+    const processSteps = document.querySelectorAll('.process-step');
+    processSteps.forEach((step, i) => {
+      step.style.transitionDelay = `${i * 0.15}s`;
+    });
+
+    // Service card tilt effect
+    document.querySelectorAll('.service-card, .why-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(1000px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) translateY(-4px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) translateY(0)';
+      });
+    });
+
+    // Type effect for hero tag
+    const heroTag = document.querySelector('.hero-tag');
+    if (heroTag) {
+      const text = heroTag.textContent;
+      heroTag.textContent = '';
+      heroTag.style.borderRight = '2px solid var(--accent)';
+      let i = 0;
+      const type = () => {
+        if (i < text.length) {
+          heroTag.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, 50);
+        } else {
+          heroTag.style.borderRight = 'none';
+        }
+      };
+      setTimeout(type, 500);
+    }
+
+    // Parallax grid on scroll
+    const gridBg = document.querySelector('.grid-bg');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      gridBg.style.transform = `translateY(${scrolled * 0.1}px)`;
+    });
+  </script>
+</body>
+</html>
