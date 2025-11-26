@@ -134,12 +134,218 @@
     /* Hero */
     .hero {
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       align-items: center;
-      padding-top: 100px;
+      padding-top: 80px;
+      padding-bottom: 40px;
       position: relative;
+      overflow: hidden;
+    }
+    .hero .wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
     }
     .hero-content { position: relative; z-index: 1; }
+
+    /* Hero Visual - Tactical Style */
+    .hero-visual {
+      position: relative;
+      height: 100%;
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-orb {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle at 30% 30%, rgba(141, 215, 255, 0.15), transparent 70%);
+      filter: blur(80px);
+      animation: orb-float 10s ease-in-out infinite;
+    }
+    @keyframes orb-float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(15px, -20px) scale(1.05); }
+    }
+    .hero-rings {
+      position: relative;
+      width: 320px;
+      height: 320px;
+    }
+    .hero-ring {
+      position: absolute;
+      border: 1px solid rgba(141, 215, 255, 0.2);
+      animation: ring-spin 20s linear infinite;
+    }
+    .hero-ring:nth-child(1) {
+      inset: 0;
+      border-color: rgba(141, 215, 255, 0.3);
+    }
+    .hero-ring:nth-child(2) {
+      inset: 35px;
+      animation-duration: 15s;
+      animation-direction: reverse;
+    }
+    .hero-ring:nth-child(3) {
+      inset: 70px;
+      animation-duration: 25s;
+    }
+    .hero-ring:nth-child(4) {
+      inset: 105px;
+      animation-duration: 18s;
+      animation-direction: reverse;
+    }
+    @keyframes ring-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .hero-ring::before {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      top: 50%;
+      left: -3px;
+      box-shadow: 0 0 15px var(--accent);
+    }
+    .hero-center {
+      position: absolute;
+      inset: 120px;
+      border: 2px solid rgba(141, 215, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+      background: rgba(2, 4, 8, 0.5);
+    }
+    .hero-center::before,
+    .hero-center::after {
+      content: '';
+      position: absolute;
+      background: var(--accent);
+    }
+    .hero-center::before {
+      width: 20px;
+      height: 2px;
+    }
+    .hero-center::after {
+      width: 2px;
+      height: 20px;
+    }
+    .hero-center-icon {
+      color: var(--accent);
+    }
+    .hero-data-points {
+      position: absolute;
+      inset: -40px;
+    }
+    .hero-data-point {
+      position: absolute;
+      padding: 10px 14px;
+      background: rgba(2, 4, 8, 0.9);
+      border: 1px solid rgba(141, 215, 255, 0.3);
+      font-size: 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      white-space: nowrap;
+      animation: data-pulse 3s ease-in-out infinite;
+    }
+    .hero-data-point::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+    }
+    .hero-data-point:nth-child(1) {
+      top: 5%;
+      right: -30px;
+      animation-delay: 0s;
+    }
+    .hero-data-point:nth-child(2) {
+      bottom: 25%;
+      right: -20px;
+      animation-delay: 1s;
+    }
+    .hero-data-point:nth-child(3) {
+      top: 45%;
+      left: -50px;
+      animation-delay: 2s;
+    }
+    @keyframes data-pulse {
+      0%, 100% { opacity: 0.6; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-3px); }
+    }
+
+    /* Floating Particles - Square/Tactical */
+    .particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0.4;
+      animation: particle-float 15s linear infinite;
+    }
+    .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
+    .particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 18s; }
+    .particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 14s; }
+    .particle:nth-child(4) { left: 40%; animation-delay: 1s; animation-duration: 16s; }
+    .particle:nth-child(5) { left: 50%; animation-delay: 3s; animation-duration: 20s; }
+    .particle:nth-child(6) { left: 60%; animation-delay: 5s; animation-duration: 13s; }
+    .particle:nth-child(7) { left: 70%; animation-delay: 0.5s; animation-duration: 17s; }
+    .particle:nth-child(8) { left: 80%; animation-delay: 2.5s; animation-duration: 15s; }
+    .particle:nth-child(9) { left: 90%; animation-delay: 4.5s; animation-duration: 19s; }
+    .particle:nth-child(10) { left: 15%; animation-delay: 1.5s; animation-duration: 14s; }
+    @keyframes particle-float {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 0.4; }
+      90% { opacity: 0.4; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+
+    /* Data Stream Lines */
+    .data-streams {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .data-stream {
+      position: absolute;
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(180deg, transparent, var(--accent), transparent);
+      opacity: 0.3;
+      animation: stream-fall 6s linear infinite;
+    }
+    .data-stream:nth-child(1) { left: 12%; animation-delay: 0s; }
+    .data-stream:nth-child(2) { left: 28%; animation-delay: 1.5s; }
+    .data-stream:nth-child(3) { left: 48%; animation-delay: 3s; }
+    .data-stream:nth-child(4) { left: 68%; animation-delay: 0.5s; }
+    .data-stream:nth-child(5) { left: 88%; animation-delay: 2.5s; }
+    @keyframes stream-fall {
+      0% { transform: translateY(-80px); opacity: 0; }
+      20% { opacity: 0.3; }
+      80% { opacity: 0.3; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
     .hero-tag {
       display: inline-flex;
       align-items: center;
@@ -652,6 +858,11 @@
 
     /* Responsive */
     @media (max-width: 1024px) {
+      .hero .wrap { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { min-height: 350px; }
+      .hero-rings { width: 280px; height: 280px; }
+      .hero-center { inset: 100px; }
+      .hero-data-points { display: none; }
       .about-grid { grid-template-columns: 1fr; gap: 60px; }
       .services-grid { grid-template-columns: 1fr; }
       .process-grid { grid-template-columns: repeat(2, 1fr); }
@@ -663,14 +874,31 @@
     @media (max-width: 768px) {
       section { padding: 100px 0; }
       nav { display: none; }
-      .hero h1 { font-size: 48px; }
-      .hero-stats { grid-template-columns: 1fr; gap: 32px; }
+      .hero { min-height: auto; padding-top: 120px; padding-bottom: 60px; }
+      .hero h1 { font-size: 42px; }
+      .hero p { font-size: 16px; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+      .hero-stat strong { font-size: 32px; }
+      .hero-visual { min-height: 300px; order: -1; }
+      .hero-rings { width: 240px; height: 240px; }
+      .hero-center { inset: 85px; }
+      .hero-orb { width: 300px; height: 300px; }
       .credentials-inner { justify-content: center; }
       .process-grid { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; gap: 48px; }
       .footer-bottom { flex-direction: column; gap: 20px; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 36px; }
+      .hero-stats { grid-template-columns: 1fr; gap: 20px; }
+      .hero-stat strong { font-size: 28px; }
+      .hero-visual { min-height: 250px; }
+      .hero-rings { width: 200px; height: 200px; }
+      .hero-center { inset: 70px; }
+      .hero-center-icon { width: 28px; height: 28px; }
+      .btn { padding: 14px 28px; font-size: 11px; }
     }
 
     /* Animations */
@@ -838,6 +1066,27 @@
 
   <!-- Hero -->
   <section class="hero">
+    <!-- Particles -->
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+    <!-- Data Streams -->
+    <div class="data-streams">
+      <div class="data-stream"></div>
+      <div class="data-stream"></div>
+      <div class="data-stream"></div>
+      <div class="data-stream"></div>
+      <div class="data-stream"></div>
+    </div>
     <div class="wrap">
       <div class="hero-content reveal">
         <div class="hero-tag">Special Forces Finance</div>
@@ -860,6 +1109,28 @@
             <strong>8</strong>
             <span>Global Centers</span>
           </div>
+        </div>
+      </div>
+      <!-- Hero Visual -->
+      <div class="hero-visual">
+        <div class="hero-orb"></div>
+        <div class="hero-rings">
+          <div class="hero-ring"></div>
+          <div class="hero-ring"></div>
+          <div class="hero-ring"></div>
+          <div class="hero-ring"></div>
+          <div class="hero-center">
+            <svg class="hero-center-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="hero-data-points">
+          <div class="hero-data-point">Active</div>
+          <div class="hero-data-point">Deployed</div>
+          <div class="hero-data-point">Secure</div>
         </div>
       </div>
     </div>
